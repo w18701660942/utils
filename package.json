@@ -1,0 +1,19 @@
+{
+  "name": "utils",
+  "version": "1.0.0",
+  "description": "utils function",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/w18701660942/utils.git"
+  },
+  "author": "Jason",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/w18701660942/utils/issues"
+  },
+  "homepage": "https://github.com/w18701660942/utils#readme"
+}
