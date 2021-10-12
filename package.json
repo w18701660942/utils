@@ -1,5 +1,5 @@
 {
-  "name": "utils",
+  "name": "@jason/utils",
   "version": "1.0.0",
   "description": "utils function",
   "main": "index.js",
