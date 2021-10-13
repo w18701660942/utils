@@ -1,5 +1,5 @@
 {
-  "name": "@jason/utils",
+  "name": "npmwjl-utils",
   "version": "1.0.0",
   "description": "utils function",
   "main": "index.js",
@@ -15,5 +15,12 @@
   "bugs": {
     "url": "https://github.com/w18701660942/utils/issues"
   },
-  "homepage": "https://github.com/w18701660942/utils#readme"
+  "homepage": "https://github.com/w18701660942/utils#readme",
+  "devDependencies": {
+    "babel-eslint": "^10.1.0",
+    "eslint": "^8.0.0"
+  },
+  "dependencies": {
+    "eslint-plugin-jsdoc": "^36.1.1"
+  }
 }
