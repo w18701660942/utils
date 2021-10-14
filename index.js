@@ -1,13 +1,14 @@
+import moment from 'moment';
 /**
  * Public file tool
- * @date 2019-04-03
+ * @date 2021-10-14
  */
 
 const _toString = Object.prototype.toString;
 
 /**
  * 是否为对象
- * @date 2020-08-04
+ * @date 2021-10-14
  * @param {any} obj
  * @returns {any}
  */
@@ -17,7 +18,7 @@ const isObject = (obj) => {
 
 /**
  * 是否为数组对象
- * @date 2020-08-04
+ * @date 2021-10-14
  * @param {any} obj
  * @returns {any}
  */
@@ -27,7 +28,7 @@ const isPlainObject = (obj) => {
 
 /**
  * 是否为空对象
- * @date 2020-08-04
+ * @date 2021-10-14
  * @param {any} value
  * @returns {any}
  */
@@ -47,7 +48,7 @@ const isArray = (value) => {
 
 /**
  * 是否为空数组
- * @date 2020-08-04
+ * @date 2021-10-14
  * @param {any} value
  * @returns {any}
  */
@@ -57,7 +58,7 @@ const isEmptyArray = (value) => {
 
 /**
  * 多维数组强制降维
- * @date 2020-08-04
+ * @date 2021-10-14
  * @param {any} arr
  * @returns {any}
  */
@@ -67,27 +68,27 @@ const flattenDeep = (arr) => {
 
 /**
  * 递归
- * @date 2020-08-04
+ * @date 2021-10-14
  * @param {any} list：递归的数据源
  * @param {any} opt：参数
  * @param {any} i=0
  * @returns {any}
  */
 const recursiveFunc = (list, opt, i = 0) => {
-    const { name = 'children', call, isReturn = false } = opt
+    const { name = 'children', call, isReturn = false } = opt;
 
-    if (!list.length) return list
+    if (!list.length) return list;
     return list.map(item => {
-        if (isReturn) item = call && call(item, i)
-        if (!isReturn) call && call(item, i)
-        if (item[name] && item[name].length > 0) item[name] = recursiveFunc(item[name], opt, i + 1)
-        return item
-    })
-}
+        if (isReturn) item = call && call(item, i);
+        if (!isReturn) call && call(item, i);
+        if (item[name] && item[name].length > 0) item[name] = recursiveFunc(item[name], opt, i + 1);
+        return item;
+    });
+};
 
 /**
  * 描述：递归方法
- * @date 2021-01-08
+ * @date 2021-10-14
  * @param {Array} {arr: 数据源
  * @param {Function} sCall：子数据遍历前的回调
  * @param {Function} cCall：子数据回调
@@ -100,23 +101,23 @@ const recursiveFunc = (list, opt, i = 0) => {
  * @returns {Array}
  */
 const func = ({ arr, sCall, cCall, eCall, children = 'children', opt, res, i, data }) => {
-    if (!arr || !arr.length) return arr
+    if (!arr || !arr.length) return arr;
     return arr.map((item, index) => {
-        const child = item[children]
-        const newI = i + 1
-        sCall && sCall({ item, res, index, i, newI, data })
+        const child = item[children];
+        const newI = i + 1;
+        sCall && sCall({ item, res, index, i, newI, data });
         if (child && child.length) {
-            item[children] = func({ arr: item[children], sCall, cCall, eCall, children, opt, res: item, i: newI, data })
-            cCall && cCall({ item, res, index, i, newI, data })
+            item[children] = func({ arr: item[children], sCall, cCall, eCall, children, opt, res: item, i: newI, data });
+            cCall && cCall({ item, res, index, i, newI, data });
         }
-        eCall && eCall({ item, res, index, i, newI, data })
-        return item
-    })
-}
+        eCall && eCall({ item, res, index, i, newI, data });
+        return item;
+    });
+};
 
 /**
  * 在多维数组中删除指定数据
- * @date 2020-08-04
+ * @date 2021-10-14
  * @param {any} treeData：多维数组
  * @param {any} id：需要删除的数据的key
  * @returns {any}
@@ -124,18 +125,18 @@ const func = ({ arr, sCall, cCall, eCall, children = 'children', opt, res, i, da
 const doDelete = (treeData, id, childrenName = 'children', idKey = 'id') => {
     for (let i = treeData.length; i > 0; i--) {
         if (treeData[i - 1][idKey] == id) {
-            treeData.splice(i - 1, 1)
+            treeData.splice(i - 1, 1);
         } else {
             if (treeData[i - 1][childrenName]) {
-                doDelete(treeData[i - 1][childrenName], id)
+                doDelete(treeData[i - 1][childrenName], id);
             }
         }
     }
-}
+};
 
 /**
  * 字符串是否包含某一字符
- * @date 2020-08-04
+ * @date 2021-10-14
  * @param {any} str：字符串
  * @param {any} begin：开始位置
  * @param {any} end：结束位置
@@ -144,14 +145,14 @@ const doDelete = (treeData, id, childrenName = 'children', idKey = 'id') => {
  */
 const stringStartWith = (str, begin, end, word) => {
     if (str.substring(begin, end).toLowerCase().indexOf(word) == 0) {
-        return true
+        return true;
     }
-    return false
-}
+    return false;
+};
 
 /**
  * 字段从一个对像转换另一个对像
- * @date 2020-08-04
+ * @date 2021-10-14
  * @param {any} item：要生成的对像item
  * @param {any} arr：要生成的同名字段
  * @param {any} souce：要生成的同名字段
@@ -161,18 +162,18 @@ const stringStartWith = (str, begin, end, word) => {
 const createItem = (item, arr, souce, prev = false) => {
     arr.map(ntem => {
         if (Array.isArray(ntem)) {
-            item[ntem[0]] = ntem[1] ? souce[ntem[0]] ? moment(souce[ntem[0]]).format('YYYY-MM-DD') : item[ntem[0]] : souce[ntem[0]]
+            item[ntem[0]] = ntem[1] ? souce[ntem[0]] ? moment(souce[ntem[0]]).format('YYYY-MM-DD') : item[ntem[0]] : souce[ntem[0]];
         } else {
             if (!item[ntem] || prev) {
-                item[ntem] = souce[ntem]
+                item[ntem] = souce[ntem];
             }
         }
-    })
-}
+    });
+};
 
 /**
  * 向原对象中新增子对象
- * @date 2020-08-04
+ * @date 2021-10-14
  * @param {any} item:原始数据
  * @param {any} newItem：新增数据
  * @param {any} filter=[]：过滤条件
@@ -180,18 +181,18 @@ const createItem = (item, arr, souce, prev = false) => {
  * @returns {any}
  */
 const createObject = (item, newItem, filter = [], isReturn = false) => {
-    const newKeys = Object.keys(newItem)
-    const filterKeys = newKeys.filter(stem => !filter.includes(stem))
+    const newKeys = Object.keys(newItem);
+    const filterKeys = newKeys.filter(stem => !filter.includes(stem));
 
     filterKeys.forEach(ntem => {
-        item[ntem] = newItem[ntem]
-    })
-    if (isReturn) return item
-}
+        item[ntem] = newItem[ntem];
+    });
+    if (isReturn) return item;
+};
 
 /**
  * 解析JSON字符串
- * @date 2020-08-04
+ * @date 2021-10-14
  * @param {any} item：JSON.parse解析的对像
  * @param {any} isReturn=true：是否JSON.parse还回数据
  * @param {any} isStringify=true：是否JSON.parse还回数据
@@ -200,55 +201,53 @@ const createObject = (item, newItem, filter = [], isReturn = false) => {
 const parseJson = (item, isReturn = true, isStringify = true) => {
     if (typeof item === 'string') {
         try {
-            item = JSON.parse(item)
+            item = JSON.parse(item);
         } catch (err) {
-            item = ''
+            item = '';
         }
     }
-    if (isReturn) return item
-    if (isStringify) return JSON.stringify(parseJson(item, true), null, 4)
-}
-
-// const getTypeofDetailfun = (that) => {
-//   if (typeof that.getDetailfun === 'function') that.getDetailfun()
-// }
+    if (isReturn) return item;
+    if (isStringify) return JSON.stringify(parseJson(item, true), null, 4);
+};
 
 /**
  * 处理下载中文乱码
- * @date 2020-08-04
+ * @date 2021-10-14
  * @param {any} response：需要处理的返回的数据
  * @param {any} fn=encodeURI
  * @param {any} splitType=';'
  * @returns {any}
  */
 const downloadFilename = (response, fn = encodeURI, splitType = ';') => {
-    if (!response.headers['content-disposition']) return response
-    const regxname = /^filename/
-    const cds = response.headers['content-disposition']
-    const cdsArr = cds.split(splitType)
-    const str = cdsArr.find(item => regxname.test(item))
-    const strIndex = cdsArr.findIndex(item => regxname.test(item))
-    const filename = str.split('=')
-    const newFileText = fn(filename[1])
+    if (!response.headers['content-disposition']) return response;
+    const regxname = /^filename/;
+    const cds = response.headers['content-disposition'];
+    const cdsArr = cds.split(splitType);
+    const str = cdsArr.find(item => regxname.test(item));
+    const strIndex = cdsArr.findIndex(item => regxname.test(item));
+    const filename = str.split('=');
+    const newFileText = fn(filename[1]);
 
-    cdsArr[strIndex] = `${filename[0]}=${newFileText}`
-    response.headers['content-disposition'] = cdsArr.join(splitType)
-    return response
-}
+    cdsArr[strIndex] = `${filename[0]}=${newFileText}`;
+    response.headers['content-disposition'] = cdsArr.join(splitType);
+    return response;
+};
+
 /**
  * 描述：判断对像属性是否存在
- * @date 2020-11-02
+ * @date 2021-10-14
  * @param {any} obj：判断对像
  * @param {any} key：弱要判断的属性
  * @returns {any} boolean
  */
 const hasOwnProperty = (obj, key) => {
-    return obj.hasOwnProperty(key)
-}
+    // eslint-disable-next-line no-prototype-builtins
+    return obj.hasOwnProperty(key);
+};
 
 /**
  * 描述： 注册组件
- * @date 2020-11-02
+ * @date 2021-10-14
  * @param {any} fileList： 文件列表
  * @param {any} isWebpack=true： 是否是使用webpack打包生成
  * @param {any} list：引入的组件列表
@@ -258,80 +257,68 @@ const hasOwnProperty = (obj, key) => {
  * @returns {any}
  */
 const registerComponents = ({ fileList, isWebpack = true, list, call, type = '/', typeIndex = 1 }) => {
-    const obj = {}
-    const arr = isWebpack ? fileList.keys() : list
+    const obj = {};
+    const arr = isWebpack ? fileList.keys() : list;
     arr.map(item => {
         if (isWebpack) {
-            const name = item.split(type)[typeIndex].replace(/\.\w+$/, '')
-            const conf = fileList(item)
-            obj[name] = conf.default || conf
+            const name = item.split(type)[typeIndex].replace(/\.\w+$/, '');
+            const conf = fileList(item);
+            obj[name] = conf.default || conf;
         } else {
-            call(item, obj)
+            call(item, obj);
         }
-    })
-    return obj
-}
-
-/**
- * 描述：生成语言包按钮数据
- * @date 2020-11-02
- * @param {any} obj：语言提示
- * @returns {any} 按钮语言化
- */
-const mergePermissionBut = (obj) => {
-    for (const key in base.permissionBase) {
-        obj[key] = { ...base.permissionBase[key], ...obj[key] }
-    }
-    return obj
-}
+    });
+    return obj;
+};
 
 /**
  * 描述：还回指定字段对像
- * @date 2020-11-02
+ * @date 2021-10-14
  * @param {any} row： 数据源（对像）
  * @param {any} rowKeyArr：需要新生成的字段
  * @returns {any}{}：新数据(对像)
  */
 const recordFilter = (row, rowKeyArr) => {
-    const obj = {}
+    const obj = {};
     rowKeyArr.map(item => {
-        if (row.hasOwnProperty(item)) obj[item] = row[item]
-    })
-    return obj
-}
+        if (hasOwnProperty(row, item)) obj[item] = row[item];
+    });
+    return obj;
+};
 
 /**
  * 描述：跟据字段生成字符串
+ * @date 2021-10-14
  * @param {any} obj 数据源（对像）
  * @param {any} arr：需要新生成的字段
  * @param {any} type 分割符号
  * @returns {any}{}：字符串
  */
 const mergerStr = ({ obj, arr, type = '' }) => {
-    let str = ''
+    let str = '';
     arr.map(item => {
-        if (obj[item]) str += obj[item].trim() + type
-    })
-    return str
-}
+        if (obj[item]) str += obj[item].trim() + type;
+    });
+    return str;
+};
 
 /**
  * 将字符串首字母转小写
- * @date 2020-08-04
+ * @date 2021-10-14
  * @param {any} letter
  * @returns {any}
  */
-const firstLetterToLowerCase = (letter) => {
-    const zh = /^[\u4E00-\u9FA5]+$/
-    if (zh.test(letter) || !letter) return letter
-    return letter.charAt(0).toLowerCase() + letter.slice(1)
-}
+const firstStrLowerCase = (letter) => {
+    const zh = /^[\u4E00-\u9FA5]+$/;
+    if (zh.test(letter) || !letter) return letter;
+    return letter.charAt(0).toLowerCase() + letter.slice(1);
+};
 
 /**
  * 描述: 替换数组字段
  * 1: 将数组字段转换成固定字段
  * 2：将数组字段转换成需要字段
- * @date 2020-11-20
+ * @date 2021-10-14
  * @param {Array} {arr:源数组
  * @param {Object} obj={name:'name'：需要替换成name字段
  * @param {String} key:'key'：需要替换成key字段
@@ -350,27 +337,27 @@ const firstLetterToLowerCase = (letter) => {
     const arr = [{name: 'wjl',age: 100},{name: 'hl',age: 10}]
  */
 const replaceFields = ({ arr, obj = { name: 'name', key: 'key', children: 'children' }, transform = { name: 'name', key: 'key', children: 'children' }, clear = false, copy, call, i }) => {
-    const newTransform = { ...obj, ...transform }
+    const newTransform = { ...obj, ...transform };
     return arr.map(item => {
-        const newI = i + 1
+        const newI = i + 1;
         if (copy && !isEmptyObject(copy)) {
             Array.from(new Set(Object.keys(copy))).map(xtem => {
-                if (!item[copy[xtem]]) item[copy[xtem]] = item[xtem]
-            })
+                if (!item[copy[xtem]]) item[copy[xtem]] = item[xtem];
+            });
         } else {
             Object.keys(obj).map(otem => {
-                if (item[obj[otem]]) item[newTransform[otem]] = item[obj[otem]]
-                if (Array.isArray(item[obj[otem]])) replaceFields({ arr: item[transform[otem]], obj, transform, clear, copy, call, i: newI })
+                if (item[obj[otem]]) item[newTransform[otem]] = item[obj[otem]];
+                if (Array.isArray(item[obj[otem]])) replaceFields({ arr: item[transform[otem]], obj, transform, clear, copy, call, i: newI });
                 // 完全清空转化前需要转化的字段
-                if (clear) delete item[obj[otem]]
+                if (clear) delete item[obj[otem]];
                 // 按照指定字段转化时清空转化前的字段
-                if (!clear && otem !== obj[otem]) delete item[obj[otem]]
-            })
+                if (!clear && otem !== obj[otem]) delete item[obj[otem]];
+            });
         }
-        call && call(item, newI)
-        return item
-    })
-}
+        call && call(item, newI);
+        return item;
+    });
+};
 export {
     _toString,
     isObject,
@@ -378,5 +365,19 @@ export {
     isEmptyArray,
     isPlainObject,
     isEmptyObject,
-    flattenDeep
+    flattenDeep,
+    recursiveFunc,
+    doDelete,
+    stringStartWith,
+    createItem,
+    createObject,
+    parseJson,
+    downloadFilename,
+    hasOwnProperty,
+    registerComponents,
+    recordFilter,
+    mergerStr,
+    replaceFields,
+    firstStrLowerCase,
+    func
 };
